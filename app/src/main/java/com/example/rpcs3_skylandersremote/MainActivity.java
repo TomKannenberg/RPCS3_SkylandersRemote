@@ -15,11 +15,52 @@ public class MainActivity extends AppCompatActivity {
     String villain_icon = "_Villain_Icon";
 
     ArrayList<String> villains = new ArrayList<>(Arrays.asList(
-            "Threatpack", "Slobber_Trap", "Cross_Crow", "Chill_Bill",
-
+            "Threatpack",
+            "Slobber_Trap",
+            "Cross_Crow",
+            "Chill_Bill",
+            "Brawl_&_Chain",
+            "Gulper",
+            "Trolling_Thunder",
+            "Shrednaught",
+            "Mab_Lobs",
+            "Bruiser_Cruiser",
+            "Brawlrus",
+            "Dr._Krankcase",
+            "Masker_Mind",
+            "Hood_Sickle",
+            "Bone_Chompy",
+            "Wolfgang",
+            "Rage_Mage",
+            "Pain-Yatta",
+            "Bomb_Shell",
+            "Lob_Goblin",
+            "Eye_Five",
+            "Blaster-Tron",
+            "Luminous",
+            "Shield_Shredder",
+            "Sheep_Creep",
+            "Cuckoo_Clocker",
+            "Chompy",
+            "Broccoli_Guy",
+            "Chompy_Mage",
+            "Kaos",
+            "Smoke_Scream",
+            "Scrap_Shooter",
+            "Grinnade",
+            "Chef_Pepper_Jack",
+            "Tussle_Sprout",
+            "Grave_Clobber",
+            "Chomp_Chest",
+            "Golden_Queen",
+            "Tae_Kwon_Crow",
+            "Fisticuffs",
+            "Eye_Scream",
+            "Nightshade",
+            "Krankenstein",
+            "Bad_Juju",
+            "Dreamcatcher"
     ));
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
