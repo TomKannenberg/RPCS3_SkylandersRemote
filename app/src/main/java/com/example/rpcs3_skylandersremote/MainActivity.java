@@ -1,23 +1,12 @@
 package com.example.rpcs3_skylandersremote;
 
-import android.app.PendingIntent;
-import android.content.Intent;
-import android.nfc.NfcAdapter;
-import android.nfc.Tag;
-import android.nfc.tech.MifareClassic;
-import android.os.Parcelable;
 import android.widget.SearchView;
-import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
 
-import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -76,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
             "Dreamcatcher"
     ));
 
-    ArrayList<GButton> gButtons = new ArrayList<>(Arrays.asList(
+    ArrayList<GButton> gVillainButtons = new ArrayList<>(Arrays.asList(
             new GButton(R.drawable.threatpack, "Threatpack"),
             new GButton(R.drawable.slobber_trap, "Slobber_Trap"),
             new GButton(R.drawable.cross_crow, "Cross_Crow"),
@@ -124,6 +113,10 @@ public class MainActivity extends AppCompatActivity {
             new GButton(R.drawable.dreamcatcher, "Dreamcatcher")
     ));
 
+    ArrayList<GButton> displayedCharacters = new ArrayList<>();
+
+    int currentState = 0; // 0 for main menu, 1 for villain characters
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,8 +125,12 @@ public class MainActivity extends AppCompatActivity {
         listView = findViewById(R.id.list_view);
         searchView = findViewById(R.id.search_view);
 
-        // Create and set the adapter
-        adapter = new GButtonAdapter(this, gButtons);
+        // Create the "Villains" main menu button
+        GButton mainMenuButton = new GButton(R.drawable.villain_image, "Villains");
+        displayedCharacters.add(mainMenuButton); // Add main menu button to the list
+
+        // Initialize the adapter with the main menu button
+        adapter = new GButtonAdapter(this, displayedCharacters);
         listView.setAdapter(adapter);
 
         // Implement search functionality
@@ -145,9 +142,51 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                adapter.getFilter().filter(newText);
+                if (currentState == 0) {
+                    // If currently displaying the main menu, filter the main menu items
+                    adapter.getFilter().filter(newText);
+                } else {
+                    // If currently displaying villains, filter the villain characters
+                    ArrayList<GButton> filteredVillains = new ArrayList<>();
+                    for (GButton button : gVillainButtons) {
+                        if (button.getText().toLowerCase().contains(newText.toLowerCase())) {
+                            filteredVillains.add(button);
+                        }
+                    }
+                    adapter.updateList(filteredVillains);
+                }
                 return false;
             }
         });
+
+        // Handle item click events
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            if (currentState == 0) {
+                // If "Villains" is clicked, update the list to show only villain characters
+                if (position == 0) {
+                    displayedCharacters.clear(); // Clear the current list
+                    displayedCharacters.addAll(gVillainButtons); // Add villain characters
+                    adapter.notifyDataSetChanged(); // Notify adapter of the data change
+                    currentState = 1; // Set state to indicate villain characters are being shown
+                }
+            } else {
+                // If a villain character is clicked, you can handle the click event here
+                // For example, you can open a details activity or perform some action
+                // You can access the clicked item using position
+            }
+        });
     }
+    @Override
+    public void onBackPressed() {
+        if (currentState != 0) {
+            // If currently showing villain characters, go back to main menu
+            displayedCharacters.clear();
+            displayedCharacters.add(new GButton(R.drawable.villain_image, "Villains"));
+            adapter.notifyDataSetChanged();
+            currentState = 0; // Set state to main menu
+        } else {
+            super.onBackPressed(); // Default behavior for other states
+        }
+    }
+
 }

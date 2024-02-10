@@ -5,14 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.example.rpcs3_skylandersremote.GButton;
 
 import java.util.ArrayList;
 import java.util.List;
-import android.widget.Filter;
-import android.widget.Filterable;
 
 public class GButtonAdapter extends ArrayAdapter<GButton> implements Filterable {
 
@@ -87,4 +86,11 @@ public class GButtonAdapter extends ArrayAdapter<GButton> implements Filterable 
             notifyDataSetChanged();
         }
     };
+
+    // Method to update the list with a new set of buttons
+    public void updateList(List<GButton> newButtons) {
+        gButtons.clear();
+        gButtons.addAll(newButtons);
+        notifyDataSetChanged();
+    }
 }
