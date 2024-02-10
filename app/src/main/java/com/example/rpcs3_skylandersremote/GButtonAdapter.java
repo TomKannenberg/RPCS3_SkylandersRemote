@@ -10,16 +10,21 @@ import android.widget.TextView;
 import com.example.rpcs3_skylandersremote.GButton;
 
 import java.util.ArrayList;
+import java.util.List;
+import android.widget.Filter;
+import android.widget.Filterable;
 
-public class GButtonAdapter extends ArrayAdapter<GButton> {
+public class GButtonAdapter extends ArrayAdapter<GButton> implements Filterable {
 
     private Context context;
-    private ArrayList<GButton> gButtons;
+    private List<GButton> gButtons;
+    private List<GButton> gButtonsFull; // To store the full list of buttons
 
     public GButtonAdapter(Context context, ArrayList<GButton> gButtons) {
         super(context, 0, gButtons);
         this.context = context;
         this.gButtons = gButtons;
+        this.gButtonsFull = new ArrayList<>(gButtons); // Initialize the full list
     }
 
     @Override
@@ -47,4 +52,39 @@ public class GButtonAdapter extends ArrayAdapter<GButton> {
         ImageView imageView;
         TextView textView;
     }
+
+    @Override
+    public Filter getFilter() {
+        return gButtonFilter;
+    }
+
+    private Filter gButtonFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<GButton> filteredList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(gButtonsFull);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+
+                for (GButton button : gButtonsFull) {
+                    if (button.getText().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(button);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            gButtons.clear();
+            gButtons.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
 }

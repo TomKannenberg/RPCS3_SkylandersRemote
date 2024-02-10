@@ -1,8 +1,20 @@
 package com.example.rpcs3_skylandersremote;
 
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.nfc.NfcAdapter;
+import android.nfc.Tag;
+import android.nfc.tech.MifareClassic;
+import android.os.Parcelable;
+import android.widget.SearchView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
+
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -11,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
 
     private ListView listView;
     private GButtonAdapter adapter;
+
+    private SearchView searchView;
 
     String villain_icon = "_Villain_Icon";
 
@@ -116,9 +130,24 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         listView = findViewById(R.id.list_view);
+        searchView = findViewById(R.id.search_view);
 
         // Create and set the adapter
         adapter = new GButtonAdapter(this, gButtons);
         listView.setAdapter(adapter);
+
+        // Implement search functionality
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return false;
+            }
+        });
     }
 }
