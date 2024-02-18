@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<GButton> displayedCharacters = new ArrayList<>();
 
     int currentState = 0; // 0 for main menu, 1 for villain characters
+    int wasState = 0;     // state for search bar
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,15 +95,25 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (currentState == 0) {
-                    adapter.getFilter().filter(newText);
+
+                if (wasState == 0 && newText.length() == 0) {
+                    displayedCharacters.clear();
+                    displayedCharacters.add(new GButton(R.drawable.villain_image, "Villains"));
+                    adapter.notifyDataSetChanged();
+                    currentState = 0;
                 } else {
+                    if (currentState == 0) {
+                        wasState = 0;
+                    } else {
+                        wasState = 1;
+                    }
                     ArrayList<GButton> filteredVillains = new ArrayList<>();
                     for (GButton button : gVillainButtons) {
                         if (button.getText().toLowerCase().contains(newText.toLowerCase())) {
                             filteredVillains.add(button);
                         }
                     }
+
                     adapter.updateList(filteredVillains);
                 }
                 return false;
