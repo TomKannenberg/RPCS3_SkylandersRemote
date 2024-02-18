@@ -17,13 +17,13 @@ public class GButtonAdapter extends ArrayAdapter<GButton> implements Filterable 
 
     private Context context;
     private List<GButton> gButtons;
-    private List<GButton> gButtonsFull; // To store the full list of buttons
+    private List<GButton> gButtonsFull;
 
     public GButtonAdapter(Context context, ArrayList<GButton> gButtons) {
         super(context, 0, gButtons);
         this.context = context;
         this.gButtons = gButtons;
-        this.gButtonsFull = new ArrayList<>(gButtons); // Initialize the full list
+        this.gButtonsFull = new ArrayList<>(gButtons);
     }
 
     @Override
@@ -87,7 +87,6 @@ public class GButtonAdapter extends ArrayAdapter<GButton> implements Filterable 
         }
     };
 
-    // Method to update the list with a new set of buttons
     public void updateList(List<GButton> newButtons) {
         gButtons.clear();
         gButtons.addAll(newButtons);
