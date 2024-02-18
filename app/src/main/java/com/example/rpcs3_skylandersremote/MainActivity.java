@@ -7,6 +7,9 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -94,23 +97,74 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
+            public boolean onQueryTextChange(String searchText) {
 
-                if (wasState == 0 && newText.length() == 0) {
+                if (wasState == 0 && searchText.length() == 0) {
                     displayedCharacters.clear();
                     displayedCharacters.add(new GButton(R.drawable.villain_image, "Villains"));
                     adapter.notifyDataSetChanged();
                     currentState = 0;
                 } else {
-                    if (currentState == 0) {
-                        wasState = 0;
-                    } else {
-                        wasState = 1;
-                    }
+                    wasState = 1;
                     ArrayList<GButton> filteredVillains = new ArrayList<>();
-                    for (GButton button : gVillainButtons) {
-                        if (button.getText().toLowerCase().contains(newText.toLowerCase())) {
-                            filteredVillains.add(button);
+
+                    Pattern pattern = Pattern.compile("(?i)(Air|Dark|Earth|Fire|Kaos|Life|Light|Magic|Tech|Undead|Water)");
+                    Matcher matcher = pattern.matcher(searchText);
+                    if (matcher.find()) {
+                        String match = matcher.group(1).toLowerCase();
+
+                        switch (match) {
+                            case "air":
+                                filterVillainsByElement(GLander.GLanderElement.Air, gVillainButtons, filteredVillains);
+                                break;
+                            case "dark":
+                                filterVillainsByElement(GLander.GLanderElement.Dark, gVillainButtons, filteredVillains);
+                                break;
+                            case "earth":
+                                filterVillainsByElement(GLander.GLanderElement.Earth, gVillainButtons, filteredVillains);
+                                break;
+                            case "fire":
+                                filterVillainsByElement(GLander.GLanderElement.Fire, gVillainButtons, filteredVillains);
+                                break;
+                            case "kaos":
+                                filterVillainsByElement(GLander.GLanderElement.Kaos, gVillainButtons, filteredVillains);
+                                break;
+                            case "life":
+                                filterVillainsByElement(GLander.GLanderElement.Life, gVillainButtons, filteredVillains);
+                                break;
+                            case "light":
+                                filterVillainsByElement(GLander.GLanderElement.Light, gVillainButtons, filteredVillains);
+                                break;
+                            case "magic":
+                                filterVillainsByElement(GLander.GLanderElement.Magic, gVillainButtons, filteredVillains);
+                                break;
+                            case "tech":
+                                filterVillainsByElement(GLander.GLanderElement.Tech, gVillainButtons, filteredVillains);
+                                break;
+                            case "undead":
+                                filterVillainsByElement(GLander.GLanderElement.Undead, gVillainButtons, filteredVillains);
+                                break;
+                            case "water":
+                                filterVillainsByElement(GLander.GLanderElement.Water, gVillainButtons, filteredVillains);
+                                break;
+                            default:
+                                break;
+                        }
+                        searchText.replace(match, "");
+                        searchText.replace(" ", "");
+
+                        for (GButton button : gVillainButtons) {
+                            if (!button.getText().toLowerCase().contains(searchText.toLowerCase())) {
+                                //filteredVillains.remove(button);
+                            }
+                        }
+                    } else {
+                        searchText.replace(" ", "");
+
+                        for (GButton button : gVillainButtons) {
+                            if (button.getText().toLowerCase().contains(searchText.toLowerCase())) {
+                                filteredVillains.add(button);
+                            }
                         }
                     }
 
@@ -121,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         listView.setOnItemClickListener((parent, view, position, id) -> {
-            if (currentState == 0) {
+            if (currentState == 0 && wasState == 0) {
                 if (position == 0) {
                     displayedCharacters.clear();
                     displayedCharacters.addAll(gVillainButtons);
@@ -141,8 +195,22 @@ public class MainActivity extends AppCompatActivity {
             displayedCharacters.add(new GButton(R.drawable.villain_image, "Villains"));
             adapter.notifyDataSetChanged();
             currentState = 0;
+        } else if (wasState == 1 && currentState == 0) {
+            searchView.setQuery("", true);
+            displayedCharacters.clear();
+            displayedCharacters.add(new GButton(R.drawable.villain_image, "Villains"));
+            adapter.notifyDataSetChanged();
+            return;
         } else {
             super.onBackPressed();
+        }
+    }
+
+    private void filterVillainsByElement(GLander.GLanderElement element, List<GLander> gVillainButtons, List<GButton> filteredVillains) {
+        for (GLander button : gVillainButtons) {
+            if (button.element == element) {
+                filteredVillains.add(button);
+            }
         }
     }
 

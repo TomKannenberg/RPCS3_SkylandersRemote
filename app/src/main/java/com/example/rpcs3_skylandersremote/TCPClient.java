@@ -41,6 +41,9 @@ public class TCPClient {
                     // Check if the PrintWriter out is initialized
                     if (out == null) {
                         startClient();
+                        if (out == null) {
+                            return;
+                        }
                     }
 
                     // Send message to server
@@ -50,17 +53,7 @@ public class TCPClient {
                     String response = in.readLine();
                     System.out.println("Response from server: " + response);
                 } catch (IOException e) {
-                    try {
-                        startClient();
-
-                        out.println(message);
-
-                        // Receive response from server
-                        String response = in.readLine();
-                        System.out.println("Response from server: " + response);
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
+                    e.printStackTrace();
                 }
             }
         }).start();
