@@ -17,20 +17,15 @@ public class TCPClient {
     }
 
     public void startClient() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    // Connect to the server
-                    socket = new Socket(serverIpAddress, port);
-                    out = new PrintWriter(socket.getOutputStream(), true);
-                    in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                    System.out.println("Connected to server.");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
+        try {
+            // Connect to the server
+            socket = new Socket(serverIpAddress, port);
+            out = new PrintWriter(socket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            System.out.println("Connected to server.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void sendPacket(final String message) {
@@ -41,9 +36,6 @@ public class TCPClient {
                     // Check if the PrintWriter out is initialized
                     if (out == null) {
                         startClient();
-                        if (out == null) {
-                            return;
-                        }
                     }
 
                     // Send message to server

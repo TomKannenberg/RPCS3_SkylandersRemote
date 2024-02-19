@@ -13,7 +13,8 @@ public class GLander extends GButton {
         Magic,
         Tech,
         Undead,
-        Water
+        Water,
+        None
     }
 
     public int image;

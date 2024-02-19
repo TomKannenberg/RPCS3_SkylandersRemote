@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,6 +19,87 @@ public class MainActivity extends AppCompatActivity {
 
     private SearchView searchView;
 
+    ArrayList<GButton> gMenuButtons = new ArrayList<>(Arrays.asList(
+            new GButton(R.drawable.villain_image, "Villains"),
+            new GButton(R.drawable.spyro, "Cores")
+    ));
+
+    ArrayList<GLander> gCoreButtons = new ArrayList<>(Arrays.asList(
+            new GLander(R.drawable.bash, "Bash", GLander.GLanderElement.Earth),
+            new GLander(R.drawable.bat_spin, "Bat_Spin", GLander.GLanderElement.Undead),
+            new GLander(R.drawable.blackout, "Blackout", GLander.GLanderElement.Dark),
+            new GLander(R.drawable.blades, "Blades", GLander.GLanderElement.Air),
+            new GLander(R.drawable.boomer, "Boomer", GLander.GLanderElement.Tech),
+            new GLander(R.drawable.bumble_blast, "Bumble_Blast", GLander.GLanderElement.Life),
+            new GLander(R.drawable.camo, "Camo", GLander.GLanderElement.Life),
+            new GLander(R.drawable.chill, "Chill", GLander.GLanderElement.Water),
+            new GLander(R.drawable.chopper, "Chopper", GLander.GLanderElement.Tech),
+            new GLander(R.drawable.chop_chop, "Chop_Chop", GLander.GLanderElement.Undead),
+            new GLander(R.drawable.cobra_cadabra, "Cobra_Cadabra", GLander.GLanderElement.Magic),
+            new GLander(R.drawable.countdown, "Countdown", GLander.GLanderElement.Tech),
+            new GLander(R.drawable.cynder, "Cynder", GLander.GLanderElement.Undead),
+            new GLander(R.drawable.d3f_vu, "DejaVu", GLander.GLanderElement.Magic),
+            new GLander(R.drawable.dino_rang, "Dino_Rang", GLander.GLanderElement.Earth),
+            new GLander(R.drawable.double_trouble, "Double_Trouble", GLander.GLanderElement.Magic),
+            new GLander(R.drawable.drill_sergeant, "Drill_Sergeant", GLander.GLanderElement.Tech),
+            new GLander(R.drawable.drobot, "Drobot", GLander.GLanderElement.Tech),
+            new GLander(R.drawable.dune_bug, "Dune_Bug", GLander.GLanderElement.Magic),
+            new GLander(R.drawable.echo, "Echo", GLander.GLanderElement.Water),
+            new GLander(R.drawable.eruptor, "Eruptor", GLander.GLanderElement.Fire),
+            new GLander(R.drawable.fist_bump, "Fist_Bump", GLander.GLanderElement.Earth),
+            new GLander(R.drawable.flameslinger, "Flameslinger", GLander.GLanderElement.Fire),
+            new GLander(R.drawable.flashwing, "Flashwing", GLander.GLanderElement.Earth),
+            new GLander(R.drawable.fling_kong, "Fling_Kong", GLander.GLanderElement.Air),
+            new GLander(R.drawable.flip_wreck, "Flip_Wreck", GLander.GLanderElement.Water),
+            new GLander(R.drawable.food_fight, "Food_Fight", GLander.GLanderElement.Life),
+            new GLander(R.drawable.fright_rider, "Fright_Rider", GLander.GLanderElement.Undead),
+            new GLander(R.drawable.fryno, "Fryno", GLander.GLanderElement.Fire),
+            new GLander(R.drawable.funny_bone, "Funny_Bone", GLander.GLanderElement.Undead),
+            new GLander(R.drawable.ghost_roaster, "Ghost_Roaster", GLander.GLanderElement.Undead),
+            new GLander(R.drawable.gill_grunt, "Gill_Grunt", GLander.GLanderElement.Water),
+            new GLander(R.drawable.grim_creeper, "Grim_Creeper", GLander.GLanderElement.Undead),
+            new GLander(R.drawable.hex, "Hex", GLander.GLanderElement.Undead),
+            new GLander(R.drawable.high_five, "High_Five", GLander.GLanderElement.Life),
+            new GLander(R.drawable.hot_dog, "Hot_Dog", GLander.GLanderElement.Fire),
+            new GLander(R.drawable.ignitor, "Ignitor", GLander.GLanderElement.Fire),
+            new GLander(R.drawable.jet_vac, "Jet_Vac", GLander.GLanderElement.Air),
+            new GLander(R.drawable.lightning_rod, "Lightning_Rod", GLander.GLanderElement.Air),
+            new GLander(R.drawable.pop_fizz, "Pop_Fizz", GLander.GLanderElement.Magic),
+            new GLander(R.drawable.pop_thorn, "Pop_Thorn", GLander.GLanderElement.Air),
+            new GLander(R.drawable.prism_break, "Prism_Break", GLander.GLanderElement.Earth),
+            new GLander(R.drawable.punk_shock, "Punk_Shock", GLander.GLanderElement.Water),
+            new GLander(R.drawable.rip_tide, "Rip_Tide", GLander.GLanderElement.Water),
+            new GLander(R.drawable.rocky_roll, "Rocky_Roll", GLander.GLanderElement.Earth),
+            new GLander(R.drawable.roller_brawl, "Roller_Brawl", GLander.GLanderElement.Undead),
+            new GLander(R.drawable.scorp, "Scorp", GLander.GLanderElement.Earth),
+            new GLander(R.drawable.scratch, "Scratch", GLander.GLanderElement.Air),
+            new GLander(R.drawable.shroomboom, "Shroomboom", GLander.GLanderElement.Life),
+            new GLander(R.drawable.slam_bam, "Slam_Bam", GLander.GLanderElement.Water),
+            new GLander(R.drawable.slobber_tooth, "Slobber_Tooth", GLander.GLanderElement.Earth),
+            new GLander(R.drawable.smolderdash, "Smolderdash", GLander.GLanderElement.Fire),
+            new GLander(R.drawable.sonic_boom, "Sonic_Boom", GLander.GLanderElement.Air),
+            new GLander(R.drawable.spotlight, "Spotlight", GLander.GLanderElement.Light),
+            new GLander(R.drawable.sprocket, "Sprocket", GLander.GLanderElement.Tech),
+            new GLander(R.drawable.spyro, "Spyro", GLander.GLanderElement.Magic),
+            new GLander(R.drawable.star_strike, "Star_Strike", GLander.GLanderElement.Magic),
+            new GLander(R.drawable.stealth_elf, "Stealth_Elf", GLander.GLanderElement.Life),
+            new GLander(R.drawable.stump_smash, "Stump_Smash", GLander.GLanderElement.Life),
+            new GLander(R.drawable.sunburn, "Sunburn", GLander.GLanderElement.Fire),
+            new GLander(R.drawable.terrafin, "Terrafin", GLander.GLanderElement.Earth),
+            new GLander(R.drawable.torch, "Torch", GLander.GLanderElement.Fire),
+            new GLander(R.drawable.trail_blazer, "Trail_Blazer", GLander.GLanderElement.Fire),
+            new GLander(R.drawable.tread_head, "Tread_Head", GLander.GLanderElement.Tech),
+            new GLander(R.drawable.trigger_happy, "Trigger_Happy", GLander.GLanderElement.Tech),
+            new GLander(R.drawable.voodood, "Voodood", GLander.GLanderElement.Magic),
+            new GLander(R.drawable.warnado, "Warnado", GLander.GLanderElement.Air),
+            new GLander(R.drawable.wham_shell, "Wham_Shell", GLander.GLanderElement.Water),
+            new GLander(R.drawable.whirlwind, "Whirlwind", GLander.GLanderElement.Air),
+            new GLander(R.drawable.wind_up, "Wind_Up", GLander.GLanderElement.Tech),
+            new GLander(R.drawable.wrecking_ball, "Wrecking_Ball", GLander.GLanderElement.Magic),
+            new GLander(R.drawable.zap, "Zap", GLander.GLanderElement.Water),
+            new GLander(R.drawable.zook, "Zook", GLander.GLanderElement.Life),
+            new GLander(R.drawable.zoo_lou, "Zoo_Lou", GLander.GLanderElement.Life)
+    ));
     ArrayList<GLander> gVillainButtons = new ArrayList<>(Arrays.asList(
             new GLander(R.drawable.threatpack, "Threatpack", GLander.GLanderElement.Water),
             new GLander(R.drawable.slobber_trap, "Slobber_Trap", GLander.GLanderElement.Water),
@@ -66,7 +148,11 @@ public class MainActivity extends AppCompatActivity {
             new GLander(R.drawable.dreamcatcher, "Dreamcatcher", GLander.GLanderElement.Air)
     ));
 
+    ArrayList<GLander> gAllButtons = new ArrayList<>();
+
     ArrayList<GButton> displayedCharacters = new ArrayList<>();
+
+    ArrayList<ArrayList<GButton>> lists;
 
     int currentState = 0; // 0 for main menu, 1 for villain characters
     int wasState = 0;     // state for search bar
@@ -74,9 +160,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        TCPClient client = new TCPClient("192.168.178.25", 5555);
 
-        client.startClient();
+        gAllButtons.addAll(gCoreButtons);
+        gAllButtons.addAll(gVillainButtons);
+
+        TCPClient client = new TCPClient("192.168.178.25", 187);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -84,8 +172,7 @@ public class MainActivity extends AppCompatActivity {
         listView = findViewById(R.id.list_view);
         searchView = findViewById(R.id.search_view);
 
-        GButton mainMenuButton = new GButton(R.drawable.villain_image, "Villains");
-        displayedCharacters.add(mainMenuButton); // Add main menu button to the list
+        displayedCharacters.addAll(gMenuButtons);
 
         adapter = new GButtonAdapter(this, displayedCharacters);
         listView.setAdapter(adapter);
@@ -101,77 +188,81 @@ public class MainActivity extends AppCompatActivity {
 
                 if (wasState == 0 && searchText.length() == 0) {
                     displayedCharacters.clear();
-                    displayedCharacters.add(new GButton(R.drawable.villain_image, "Villains"));
                     adapter.notifyDataSetChanged();
                     currentState = 0;
                 } else {
                     wasState = 1;
-                    ArrayList<GButton> filteredVillains = new ArrayList<>();
+                    ArrayList<GButton> filteredSkylanders = new ArrayList<>();
 
                     Pattern pattern = Pattern.compile("(?i)(Air|Dark|Earth|Fire|Kaos|Life|Light|Magic|Tech|Undead|Water)");
                     Matcher matcher = pattern.matcher(searchText);
                     if (matcher.find()) {
                         String match = matcher.group(1).toLowerCase();
-
+                        GLander.GLanderElement result;
                         switch (match) {
                             case "air":
-                                filterVillainsByElement(GLander.GLanderElement.Air, gVillainButtons, filteredVillains);
+                                result = GLander.GLanderElement.Air;
                                 break;
                             case "dark":
-                                filterVillainsByElement(GLander.GLanderElement.Dark, gVillainButtons, filteredVillains);
+                                result = GLander.GLanderElement.Dark;
                                 break;
                             case "earth":
-                                filterVillainsByElement(GLander.GLanderElement.Earth, gVillainButtons, filteredVillains);
+                                result = GLander.GLanderElement.Earth;
                                 break;
                             case "fire":
-                                filterVillainsByElement(GLander.GLanderElement.Fire, gVillainButtons, filteredVillains);
+                                result = GLander.GLanderElement.Fire;
                                 break;
                             case "kaos":
-                                filterVillainsByElement(GLander.GLanderElement.Kaos, gVillainButtons, filteredVillains);
+                                result = GLander.GLanderElement.Kaos;
                                 break;
                             case "life":
-                                filterVillainsByElement(GLander.GLanderElement.Life, gVillainButtons, filteredVillains);
+                                result = GLander.GLanderElement.Life;
                                 break;
                             case "light":
-                                filterVillainsByElement(GLander.GLanderElement.Light, gVillainButtons, filteredVillains);
+                                result = GLander.GLanderElement.Light;
                                 break;
                             case "magic":
-                                filterVillainsByElement(GLander.GLanderElement.Magic, gVillainButtons, filteredVillains);
+                                result = GLander.GLanderElement.Magic;
                                 break;
                             case "tech":
-                                filterVillainsByElement(GLander.GLanderElement.Tech, gVillainButtons, filteredVillains);
+                                result = GLander.GLanderElement.Tech;
                                 break;
                             case "undead":
-                                filterVillainsByElement(GLander.GLanderElement.Undead, gVillainButtons, filteredVillains);
+                                result = GLander.GLanderElement.Undead;
                                 break;
                             case "water":
-                                filterVillainsByElement(GLander.GLanderElement.Water, gVillainButtons, filteredVillains);
+                                result = GLander.GLanderElement.Water;
                                 break;
                             default:
+                                result = GLander.GLanderElement.None;
                                 break;
                         }
                         searchText.replace(match, "");
                         searchText.replace(" ", "");
 
-                        for (GButton button : gVillainButtons) {
+                        filterVillainsByElement(result, gAllButtons, filteredSkylanders, searchText);
+
+                        for (GButton button : gAllButtons) {
                             if (!button.getText().toLowerCase().contains(searchText.toLowerCase())) {
-                                //filteredVillains.remove(button);
+                                //filteredSkylanders.remove(button);
                             }
                         }
                     } else {
                         searchText.replace(" ", "");
 
-                        for (GButton button : gVillainButtons) {
+                        for (GButton button : gAllButtons) {
                             if (button.getText().toLowerCase().contains(searchText.toLowerCase())) {
-                                filteredVillains.add(button);
+                                filteredSkylanders.add(button);
                             }
                         }
                     }
 
-                    adapter.updateList(filteredVillains);
+                    adapter.updateList(filteredSkylanders);
                 }
                 return false;
             }
+
+
         });
 
         listView.setOnItemClickListener((parent, view, position, id) -> {
@@ -181,6 +272,11 @@ public class MainActivity extends AppCompatActivity {
                     displayedCharacters.addAll(gVillainButtons);
                     adapter.notifyDataSetChanged();
                     currentState = 1;
+                } else if (position == 1) {
+                    displayedCharacters.clear();
+                    displayedCharacters.addAll(gCoreButtons);
+                    adapter.notifyDataSetChanged();
+                    currentState = 2;
                 }
             } else {
                 String itemName = displayedCharacters.get(position).getText();
@@ -192,21 +288,22 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (currentState != 0) {
             displayedCharacters.clear();
-            displayedCharacters.add(new GButton(R.drawable.villain_image, "Villains"));
+            displayedCharacters.addAll(gMenuButtons);
             adapter.notifyDataSetChanged();
             currentState = 0;
         } else if (wasState == 1 && currentState == 0) {
             searchView.setQuery("", true);
             displayedCharacters.clear();
-            displayedCharacters.add(new GButton(R.drawable.villain_image, "Villains"));
+            displayedCharacters.addAll(gMenuButtons);
             adapter.notifyDataSetChanged();
+            wasState = 0;
             return;
         } else {
             super.onBackPressed();
         }
     }
 
-    private void filterVillainsByElement(GLander.GLanderElement element, List<GLander> gVillainButtons, List<GButton> filteredVillains) {
+    private void filterVillainsByElement(GLander.GLanderElement element, List<GLander> gVillainButtons, List<GButton> filteredVillains, String searchText) {
         for (GLander button : gVillainButtons) {
             if (button.element == element) {
                 filteredVillains.add(button);
