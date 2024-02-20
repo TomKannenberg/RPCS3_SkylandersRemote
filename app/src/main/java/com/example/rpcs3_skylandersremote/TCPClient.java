@@ -16,16 +16,25 @@ public class TCPClient {
         this.port = port;
     }
 
-    public void startClient() {
+    public boolean startClient() {
+        return connectToServer();
+    }
+
+    private boolean connectToServer() {
         try {
             // Connect to the server
             socket = new Socket(serverIpAddress, port);
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            System.out.println("Connected to server.");
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         }
+    }
+
+    public void updateIP(String serverIpAddress) {
+        this.serverIpAddress = serverIpAddress;
     }
 
     public void sendPacket(final String message) {
@@ -33,30 +42,52 @@ public class TCPClient {
             @Override
             public void run() {
                 try {
-                    // Check if the PrintWriter out is initialized
-                    if (out == null) {
+                    // Check if the client is connected before sending the message
+                    if (out != null && socket != null && socket.isConnected()) {
+                        // Send message to server
+                        out.println(message);
+
+                        // Receive response from server
+                        String response = in.readLine();
+                        System.out.println("Response from server: " + response);
+                    } else {
+                        System.out.println("Client is not connected to the server.");
                         startClient();
+                        sendPacket(message);
                     }
-
-                    // Send message to server
-                    out.println(message);
-
-                    // Receive response from server
-                    String response = in.readLine();
-                    System.out.println("Response from server: " + response);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    // Handle SocketException - Connection reset
+                    if (e instanceof SocketException && e.getMessage().contains("Connection reset")) {
+                        System.out.println(e.getMessage());
+                        if (!startClient()) {
+                            return;
+                        }
+                        sendPacket(message);
+                    } else {
+                        e.printStackTrace();
+                    }
                 }
             }
         }).start();
     }
 
+
     public void stopClient() {
         try {
             // Close resources
-            out.close();
-            in.close();
-            socket.close();
+            if (out != null) {
+                out.close();
+            }
+            if (in != null) {
+                in.close();
+            }
+            if (socket != null) {
+                socket.close();
+            }
+            // Set resources to null
+            out = null;
+            in = null;
+            socket = null;
             System.out.println("Disconnected from server.");
         } catch (IOException e) {
             e.printStackTrace();

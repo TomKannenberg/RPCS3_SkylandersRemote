@@ -1,6 +1,10 @@
 package com.example.rpcs3_skylandersremote;
 
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.EditText;
 import android.widget.SearchView;
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
@@ -160,11 +164,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-
         gAllButtons.addAll(gCoreButtons);
         gAllButtons.addAll(gVillainButtons);
 
-        TCPClient client = new TCPClient("192.168.178.25", 187);
+        TCPClient client = new TCPClient("192.168.178.20", 187);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -281,6 +284,36 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 String itemName = displayedCharacters.get(position).getText();
                 client.sendPacket(itemName);
+            }
+        });
+
+        EditText ipEditText = findViewById(R.id.ip_address_input);
+
+        ipEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Not needed for this implementation
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Not needed for this implementation
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String ipNumberStr = s.toString();
+                if (!ipNumberStr.isEmpty()) {
+                    int ipNumber = Integer.parseInt(ipNumberStr);
+                    if (ipNumber < 0 || ipNumber > 255) {
+                        ipEditText.setText("0");
+                    } else {
+                        String fullIpAddress = "192.168.178." + ipNumberStr;
+                        TextView ipAddressTextView = findViewById(R.id.ip_address_text);
+                        ipAddressTextView.setText(fullIpAddress);
+                        client.updateIP(fullIpAddress);
+                    }
+                }
             }
         });
     }
