@@ -104,6 +104,44 @@ public class MainActivity extends AppCompatActivity {
             new GLander(R.drawable.zook, "Zook", GLander.GLanderElement.Life),
             new GLander(R.drawable.zoo_lou, "Zoo_Lou", GLander.GLanderElement.Life)
     ));
+
+    ArrayList<GLander> gSwapperTopButtons = new ArrayList<>(Arrays.asList(
+            new GLander(R.drawable.wash, "Wash", GLander.GLanderElement.Water, GLander.GLanderType.SwapperTop),
+            new GLander(R.drawable.freeze, "Freeze", GLander.GLanderElement.Water, GLander.GLanderType.SwapperTop),
+            new GLander(R.drawable.blast, "Blast", GLander.GLanderElement.Fire, GLander.GLanderType.SwapperTop),
+            new GLander(R.drawable.fire, "Fire", GLander.GLanderElement.Fire, GLander.GLanderType.SwapperTop),
+            new GLander(R.drawable.grilla, "Grilla", GLander.GLanderElement.Life, GLander.GLanderType.SwapperTop),
+            new GLander(R.drawable.stink, "Stink", GLander.GLanderElement.Life, GLander.GLanderType.SwapperTop),
+            new GLander(R.drawable.spy, "Spy", GLander.GLanderElement.Tech, GLander.GLanderType.SwapperTop),
+            new GLander(R.drawable.magna, "Magna", GLander.GLanderElement.Tech, GLander.GLanderType.SwapperTop),
+            new GLander(R.drawable.hoot, "Hoot", GLander.GLanderElement.Magic, GLander.GLanderType.SwapperTop),
+            new GLander(R.drawable.trap, "Trap", GLander.GLanderElement.Magic, GLander.GLanderType.SwapperTop),
+            new GLander(R.drawable.night, "Night", GLander.GLanderElement.Undead, GLander.GLanderType.SwapperTop),
+            new GLander(R.drawable.rattle, "Rattle", GLander.GLanderElement.Undead, GLander.GLanderType.SwapperTop),
+            new GLander(R.drawable.rubble, "Rubble", GLander.GLanderElement.Earth, GLander.GLanderType.SwapperTop),
+            new GLander(R.drawable.doom, "Doom", GLander.GLanderElement.Earth, GLander.GLanderType.SwapperTop),
+            new GLander(R.drawable.boom, "Boom", GLander.GLanderElement.Air, GLander.GLanderType.SwapperTop),
+            new GLander(R.drawable.free, "Free", GLander.GLanderElement.Air, GLander.GLanderType.SwapperTop)
+    ));
+
+    ArrayList<GLander> gSwapperBottomButtons = new ArrayList<>(Arrays.asList(
+            new GLander(R.drawable.buckler, "Buckler", GLander.GLanderElement.Water, GLander.GLanderType.SwapperBottom),
+            new GLander(R.drawable.blade, "Blade", GLander.GLanderElement.Water, GLander.GLanderType.SwapperBottom),
+            new GLander(R.drawable.zone, "Zone", GLander.GLanderElement.Fire, GLander.GLanderType.SwapperBottom),
+            new GLander(R.drawable.kraken, "Kraken", GLander.GLanderElement.Fire, GLander.GLanderType.SwapperBottom),
+            new GLander(R.drawable.drilla, "Drilla", GLander.GLanderElement.Life, GLander.GLanderType.SwapperBottom),
+            new GLander(R.drawable.bomb, "Bomb", GLander.GLanderElement.Life, GLander.GLanderType.SwapperBottom),
+            new GLander(R.drawable.rise, "Rise", GLander.GLanderElement.Tech, GLander.GLanderType.SwapperBottom),
+            new GLander(R.drawable.charge, "", GLander.GLanderElement.Tech, GLander.GLanderType.SwapperBottom),
+            new GLander(R.drawable.loop, "Loop", GLander.GLanderElement.Magic, GLander.GLanderType.SwapperBottom),
+            new GLander(R.drawable.shadow, "Shadow", GLander.GLanderElement.Magic, GLander.GLanderType.SwapperBottom),
+            new GLander(R.drawable.shift, "Shift", GLander.GLanderElement.Undead, GLander.GLanderType.SwapperBottom),
+            new GLander(R.drawable.shake, "Shake", GLander.GLanderElement.Undead, GLander.GLanderType.SwapperBottom),
+            new GLander(R.drawable.rouser, "Rouser", GLander.GLanderElement.Earth, GLander.GLanderType.SwapperBottom),
+            new GLander(R.drawable.stone, "Stone", GLander.GLanderElement.Earth, GLander.GLanderType.SwapperBottom),
+            new GLander(R.drawable.jet, "Jet", GLander.GLanderElement.Air, GLander.GLanderType.SwapperBottom),
+            new GLander(R.drawable.ranger, "Ranger", GLander.GLanderElement.Air, GLander.GLanderType.SwapperBottom)
+    ));
     ArrayList<GLander> gVillainButtons = new ArrayList<>(Arrays.asList(
             new GLander(R.drawable.threatpack, "Threatpack", GLander.GLanderElement.Water),
             new GLander(R.drawable.slobber_trap, "Slobber_Trap", GLander.GLanderElement.Water),
@@ -160,12 +198,17 @@ public class MainActivity extends AppCompatActivity {
 
     int currentState = 0; // 0 for main menu, 1 for villain characters
     int wasState = 0;     // state for search bar
-
+    public static int topSwapper = 0;
+    public static int bottomSwapper = 0;
+    String topStr = "";
+    String botStr = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         gAllButtons.addAll(gCoreButtons);
         gAllButtons.addAll(gVillainButtons);
+        gAllButtons.addAll(gSwapperTopButtons);
+        gAllButtons.addAll(gSwapperBottomButtons);
 
         TCPClient client = new TCPClient("192.168.178.20", 187);
 
@@ -282,8 +325,29 @@ public class MainActivity extends AppCompatActivity {
                     currentState = 2;
                 }
             } else {
-                String itemName = displayedCharacters.get(position).getText();
+                GLander g = (GLander)displayedCharacters.get(position);
+                if (g.swapper) {
+                    if (g.low) {
+                        bottomSwapper = g.image;
+                        botStr = g.name;
+                    } else {
+                        topSwapper = g.image;
+                        topStr = g.name;
+                    }
+                }
+                String itemName = Byte.toString(g.type.getValue()) + g.getText();
                 client.sendPacket(itemName);
+
+                if (g.swapper) {
+                    String item2Name;
+                    if (g.low && topSwapper != 0) {
+                        item2Name = "1" + topStr;
+                        client.sendPacket(item2Name);
+                    } else if (bottomSwapper != 0) {
+                        item2Name = "2" + botStr;
+                        client.sendPacket(item2Name);
+                    }
+                }
             }
         });
 
