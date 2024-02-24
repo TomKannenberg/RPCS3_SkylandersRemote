@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
             new GButton(R.drawable.spyro, "Cores"),
             new GButton(R.drawable.swapper, "Swappers"),
             new GButton(R.drawable.snap_shot, "Trap Masters"),
+            new GButton(R.drawable.undead_skull, "Traps"),
             new GButton(R.drawable.topswapper, "Swapper Tops"),
             new GButton(R.drawable.bottomswapper, "Swapper Bottoms"),
             new GButton(R.drawable.villain_image, "Villains")
@@ -173,6 +174,75 @@ public class MainActivity extends AppCompatActivity {
             new GLander(R.drawable.wildfire, "Wildfire", GLander.GLanderElement.Fire)
 
     ));
+
+    ArrayList<GLander> gTrapButtons = new ArrayList<>(Arrays.asList(
+            new GLander(R.drawable.air_hourglass, "Tempest Timer", GLander.GLanderElement.Air, GLander.GLanderType.Special1),
+            new GLander(R.drawable.air_jughead, "Drafty Decanter", GLander.GLanderElement.Air, GLander.GLanderType.Special1),
+            new GLander(R.drawable.air_screamer, "Storm Warning", GLander.GLanderElement.Air, GLander.GLanderType.Special1),
+            new GLander(R.drawable.air_snake, "Cloudy Cobra", GLander.GLanderElement.Air, GLander.GLanderType.Special1),
+            new GLander(R.drawable.air_sword, "Air Sword", GLander.GLanderElement.Air, GLander.GLanderType.Special1),
+            new GLander(R.drawable.air_toucan, "Breezy Bird", GLander.GLanderElement.Air, GLander.GLanderType.Special1),
+            new GLander(R.drawable.dark_handstand, "Ghastly Grimace", GLander.GLanderElement.Dark, GLander.GLanderType.Special1),
+            new GLander(R.drawable.dark_spider, "Shadow Spider", GLander.GLanderElement.Dark, GLander.GLanderType.Special1),
+            new GLander(R.drawable.dark_sword, "Dark Dagger", GLander.GLanderElement.Dark, GLander.GLanderType.Special1),
+            new GLander(R.drawable.earth_bunny, "Easter Rubble Trouble", GLander.GLanderElement.Earth, GLander.GLanderType.Special1),
+            new GLander(R.drawable.earth_hammer, "Slag Hammer", GLander.GLanderElement.Earth, GLander.GLanderType.Special1),
+            new GLander(R.drawable.earth_handstand, "Rubble Trouble", GLander.GLanderElement.Earth, GLander.GLanderType.Special1),
+            new GLander(R.drawable.earth_hourglass, "Dust of Time", GLander.GLanderElement.Earth, GLander.GLanderType.Special1),
+            new GLander(R.drawable.earth_orb, "Banded Boulder", GLander.GLanderElement.Earth, GLander.GLanderType.Special1),
+            new GLander(R.drawable.earth_totem, "Spinning Sandstorm", GLander.GLanderElement.Earth, GLander.GLanderType.Special1),
+            new GLander(R.drawable.earth_toucan, "Rock Hawk", GLander.GLanderElement.Earth, GLander.GLanderType.Special1),
+            new GLander(R.drawable.earth_tousslesprout, "Red Hot Toussle Sprout", GLander.GLanderElement.Earth, GLander.GLanderType.Special1),
+            new GLander(R.drawable.fire_captain, "Spark Spear", GLander.GLanderElement.Fire, GLander.GLanderType.Special1),
+            new GLander(R.drawable.fire_scepter, "Fire Flower", GLander.GLanderElement.Fire, GLander.GLanderType.Special1),
+            new GLander(R.drawable.fire_screamer, "Scorching Stopper", GLander.GLanderElement.Fire, GLander.GLanderType.Special1),
+            new GLander(R.drawable.fire_torch, "Eternal Flame", GLander.GLanderElement.Fire, GLander.GLanderType.Special1),
+            new GLander(R.drawable.fire_totem, "Searing Spinner", GLander.GLanderElement.Fire, GLander.GLanderType.Special1),
+            new GLander(R.drawable.fire_yawn, "Blazing Belch", GLander.GLanderElement.Fire, GLander.GLanderType.Special1),
+            new GLander(R.drawable.kaost, "Kaos Trap", GLander.GLanderElement.Kaos, GLander.GLanderType.Special1),
+            new GLander(R.drawable.kaos_ultimate, "Ultimate Kaos Trap", GLander.GLanderElement.Kaos, GLander.GLanderType.Special1),
+            new GLander(R.drawable.life_broccoliguy, "Steamed Broccoli Guy", GLander.GLanderElement.Life, GLander.GLanderType.Special1),
+            new GLander(R.drawable.life_hammer, "Weed Whacker", GLander.GLanderElement.Life, GLander.GLanderType.Special1),
+            new GLander(R.drawable.life_shieldshredder, "Riot Shield Shredder", GLander.GLanderElement.Life, GLander.GLanderType.Special1),
+            new GLander(R.drawable.life_snake, "Seed Serpent", GLander.GLanderElement.Life, GLander.GLanderType.Special1),
+            new GLander(R.drawable.life_sword, "Jade Blade", GLander.GLanderElement.Life, GLander.GLanderType.Special1),
+            new GLander(R.drawable.life_torch, "Emerald Enery", GLander.GLanderElement.Life, GLander.GLanderType.Special1),
+            new GLander(R.drawable.life_toucan, "Oak Eagle", GLander.GLanderElement.Life, GLander.GLanderType.Special1),
+            new GLander(R.drawable.life_yawn, "Shrub Shrieker", GLander.GLanderElement.Life, GLander.GLanderType.Special1),
+            new GLander(R.drawable.light_owl, "Heavenly Hawk", GLander.GLanderElement.Light, GLander.GLanderType.Special1),
+            new GLander(R.drawable.light_rebelgoblin, "Rebel Lob Goblin", GLander.GLanderElement.Light, GLander.GLanderType.Special1),
+            new GLander(R.drawable.light_rocket, "Shining Ship", GLander.GLanderElement.Light, GLander.GLanderType.Special1),
+            new GLander(R.drawable.light_yawn, "Beam Scream", GLander.GLanderElement.Light, GLander.GLanderType.Special1),
+            new GLander(R.drawable.magic_axe, "Axe of Illusions", GLander.GLanderElement.Magic, GLander.GLanderType.Special1),
+            new GLander(R.drawable.magic_hourglass, "Arcane Hourglass", GLander.GLanderElement.Magic, GLander.GLanderType.Special1),
+            new GLander(R.drawable.magic_logholder, "Biter's Bane", GLander.GLanderElement.Magic, GLander.GLanderType.Special1),
+            new GLander(R.drawable.magic_rocket, "Rune Rocket", GLander.GLanderElement.Magic, GLander.GLanderType.Special1),
+            new GLander(R.drawable.magic_skull, "Sorcerous Skull", GLander.GLanderElement.Magic, GLander.GLanderType.Special1),
+            new GLander(R.drawable.magic_totem, "Spell Slapper", GLander.GLanderElement.Magic, GLander.GLanderType.Special1),
+            new GLander(R.drawable.tech_angel, "Automatic Angel", GLander.GLanderElement.Tech, GLander.GLanderType.Special1),
+            new GLander(R.drawable.tech_hand, "Grabbing Gadget", GLander.GLanderElement.Tech, GLander.GLanderType.Special1),
+            new GLander(R.drawable.tech_handstand, "Topsy Techy", GLander.GLanderElement.Tech, GLander.GLanderType.Special1),
+            new GLander(R.drawable.tech_helmet, "Flying Helmet", GLander.GLanderElement.Tech, GLander.GLanderType.Special1),
+            new GLander(R.drawable.tech_scepter, "Factory Flower", GLander.GLanderElement.Tech, GLander.GLanderType.Special1),
+            new GLander(R.drawable.tech_shreadnaught, "Steampunk Shrednaught", GLander.GLanderElement.Tech, GLander.GLanderType.Special1),
+            new GLander(R.drawable.tech_tiki, "Tech Totem", GLander.GLanderElement.Tech, GLander.GLanderType.Special1),
+            new GLander(R.drawable.undead_axe, "Haunted Hatched", GLander.GLanderElement.Undead, GLander.GLanderType.Special1),
+            new GLander(R.drawable.undead_captain, "Dream Piercer", GLander.GLanderElement.Undead, GLander.GLanderType.Special1),
+            new GLander(R.drawable.undead_hand, "Grim Gripper", GLander.GLanderElement.Undead, GLander.GLanderType.Special1),
+            new GLander(R.drawable.undead_orb, "Spirit Sphere", GLander.GLanderElement.Undead, GLander.GLanderType.Special1),
+            new GLander(R.drawable.undead_orb_legendary, "Legendary Spirit Sphere", GLander.GLanderElement.Undead, GLander.GLanderType.Special1),
+            new GLander(R.drawable.undead_skull, "Spectral Skull", GLander.GLanderElement.Undead, GLander.GLanderType.Special1),
+            new GLander(R.drawable.undead_skull_legendary, "Legendary Spectral Skull", GLander.GLanderElement.Undead, GLander.GLanderType.Special1),
+            new GLander(R.drawable.undead_snake, "Spooky Snake", GLander.GLanderElement.Undead, GLander.GLanderType.Special1),
+            new GLander(R.drawable.water_angel, "Soaking Staff", GLander.GLanderElement.Water, GLander.GLanderType.Special1),
+            new GLander(R.drawable.water_axe, "Aqua Axe", GLander.GLanderElement.Water, GLander.GLanderType.Special1),
+            new GLander(R.drawable.water_brawlnchain, "Outlaw Brawl & Chain", GLander.GLanderElement.Water, GLander.GLanderType.Special1),
+            new GLander(R.drawable.water_helmet, "Frost Helm", GLander.GLanderElement.Water, GLander.GLanderType.Special1),
+            new GLander(R.drawable.water_jughead, "Flood Flask", GLander.GLanderElement.Water, GLander.GLanderType.Special1),
+            new GLander(R.drawable.water_jughead_legendary, "Legendary Flood Flask", GLander.GLanderElement.Water, GLander.GLanderType.Special1),
+            new GLander(R.drawable.water_logholder, "Wet Walter", GLander.GLanderElement.Water, GLander.GLanderType.Special1),
+            new GLander(R.drawable.water_tiki, "Tidal Tiki", GLander.GLanderElement.Water, GLander.GLanderType.Special1)
+    ));
     ArrayList<GLander> gVillainButtons = new ArrayList<>(Arrays.asList(
             new GLander(R.drawable.threatpack, "Threatpack", GLander.GLanderElement.Water),
             new GLander(R.drawable.slobber_trap, "Slobber_Trap", GLander.GLanderElement.Water),
@@ -239,6 +309,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         getSupportActionBar().hide();
+
+
+        String ast;
 
         TCPClient client = new TCPClient("192.168.178.20", 187);
 
@@ -371,12 +444,15 @@ public class MainActivity extends AppCompatActivity {
                         currentList = gTrapMasterButtons;
                         break;
                     case 3:
-                        currentList = gSwapperTopButtons;
+                        currentList = gTrapButtons;
                         break;
                     case 4:
-                        currentList = gSwapperBottomButtons;
+                        currentList = gSwapperTopButtons;
                         break;
                     case 5:
+                        currentList = gSwapperBottomButtons;
+                        break;
+                    case 6:
                         currentList = gVillainButtons;
                         break;
 
