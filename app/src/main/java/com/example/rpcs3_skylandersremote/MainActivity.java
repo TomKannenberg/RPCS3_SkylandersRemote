@@ -1,5 +1,7 @@
 package com.example.rpcs3_skylandersremote;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
@@ -9,9 +11,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
 
+import javax.microedition.khronos.opengles.GL;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,8 +28,12 @@ public class MainActivity extends AppCompatActivity {
     private SearchView searchView;
 
     ArrayList<GButton> gMenuButtons = new ArrayList<>(Arrays.asList(
-            new GButton(R.drawable.villain_image, "Villains"),
-            new GButton(R.drawable.spyro, "Cores")
+            new GButton(R.drawable.spyro, "Cores"),
+            new GButton(R.drawable.swapper, "Swappers"),
+            new GButton(R.drawable.snap_shot, "Trap Masters"),
+            new GButton(R.drawable.topswapper, "Swapper Tops"),
+            new GButton(R.drawable.bottomswapper, "Swapper Bottoms"),
+            new GButton(R.drawable.villain_image, "Villains")
     ));
 
     ArrayList<GLander> gCoreButtons = new ArrayList<>(Arrays.asList(
@@ -104,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
             new GLander(R.drawable.zook, "Zook", GLander.GLanderElement.Life),
             new GLander(R.drawable.zoo_lou, "Zoo_Lou", GLander.GLanderElement.Life)
     ));
-
+    ArrayList<GLander> gSwapperButtons = new ArrayList<>();
     ArrayList<GLander> gSwapperTopButtons = new ArrayList<>(Arrays.asList(
             new GLander(R.drawable.wash, "Wash", GLander.GLanderElement.Water, GLander.GLanderType.SwapperTop),
             new GLander(R.drawable.freeze, "Freeze", GLander.GLanderElement.Water, GLander.GLanderType.SwapperTop),
@@ -132,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
             new GLander(R.drawable.drilla, "Drilla", GLander.GLanderElement.Life, GLander.GLanderType.SwapperBottom),
             new GLander(R.drawable.bomb, "Bomb", GLander.GLanderElement.Life, GLander.GLanderType.SwapperBottom),
             new GLander(R.drawable.rise, "Rise", GLander.GLanderElement.Tech, GLander.GLanderType.SwapperBottom),
-            new GLander(R.drawable.charge, "", GLander.GLanderElement.Tech, GLander.GLanderType.SwapperBottom),
+            new GLander(R.drawable.charge, "Charge", GLander.GLanderElement.Tech, GLander.GLanderType.SwapperBottom),
             new GLander(R.drawable.loop, "Loop", GLander.GLanderElement.Magic, GLander.GLanderType.SwapperBottom),
             new GLander(R.drawable.shadow, "Shadow", GLander.GLanderElement.Magic, GLander.GLanderType.SwapperBottom),
             new GLander(R.drawable.shift, "Shift", GLander.GLanderElement.Undead, GLander.GLanderType.SwapperBottom),
@@ -141,6 +149,29 @@ public class MainActivity extends AppCompatActivity {
             new GLander(R.drawable.stone, "Stone", GLander.GLanderElement.Earth, GLander.GLanderType.SwapperBottom),
             new GLander(R.drawable.jet, "Jet", GLander.GLanderElement.Air, GLander.GLanderType.SwapperBottom),
             new GLander(R.drawable.ranger, "Ranger", GLander.GLanderElement.Air, GLander.GLanderType.SwapperBottom)
+    ));
+
+    ArrayList<GLander> gTrapMasterButtons = new ArrayList<>(Arrays.asList(
+
+            new GLander(R.drawable.blastermind, "Blastermind", GLander.GLanderElement.Magic),
+            new GLander(R.drawable.bushwhack, "Bushwhack", GLander.GLanderElement.Life),
+            new GLander(R.drawable.enigma, "Enigma", GLander.GLanderElement.Magic),
+            new GLander(R.drawable.gearshift, "Gearshift", GLander.GLanderElement.Tech),
+            new GLander(R.drawable.gusto, "Gusto", GLander.GLanderElement.Air),
+            new GLander(R.drawable.head_rush, "Head Rush", GLander.GLanderElement.Earth),
+            new GLander(R.drawable.jawbreaker, "Jawbreaker", GLander.GLanderElement.Tech),
+            new GLander(R.drawable.ka_boom, "Ka-Boom", GLander.GLanderElement.Fire),
+            new GLander(R.drawable.knight_light, "Knight Light", GLander.GLanderElement.Light),
+            new GLander(R.drawable.knight_mare, "Knight Mare", GLander.GLanderElement.Dark),
+            new GLander(R.drawable.krypt_king, "Krypt King", GLander.GLanderElement.Undead),
+            new GLander(R.drawable.lob_star, "Lob Star", GLander.GLanderElement.Water),
+            new GLander(R.drawable.short_cut, "Short Cut", GLander.GLanderElement.Undead),
+            new GLander(R.drawable.snap_shot, "Snap Shot", GLander.GLanderElement.Water),
+            new GLander(R.drawable.thunderbolt, "Thunderbolt", GLander.GLanderElement.Air),
+            new GLander(R.drawable.tuff_luck, "Tuff Luck", GLander.GLanderElement.Life),
+            new GLander(R.drawable.wallop, "Wallop", GLander.GLanderElement.Earth),
+            new GLander(R.drawable.wildfire, "Wildfire", GLander.GLanderElement.Fire)
+
     ));
     ArrayList<GLander> gVillainButtons = new ArrayList<>(Arrays.asList(
             new GLander(R.drawable.threatpack, "Threatpack", GLander.GLanderElement.Water),
@@ -200,17 +231,26 @@ public class MainActivity extends AppCompatActivity {
     int wasState = 0;     // state for search bar
     public static int topSwapper = 0;
     public static int bottomSwapper = 0;
-    String topStr = "";
-    String botStr = "";
+    public static String topStr = "";
+    public static String botStr = "";
+
+    ArrayList<GLander> currentList = gAllButtons;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        getSupportActionBar().hide();
+
+        TCPClient client = new TCPClient("192.168.178.20", 187);
 
         gAllButtons.addAll(gCoreButtons);
         gAllButtons.addAll(gVillainButtons);
         gAllButtons.addAll(gSwapperTopButtons);
         gAllButtons.addAll(gSwapperBottomButtons);
 
-        TCPClient client = new TCPClient("192.168.178.20", 187);
+        for (int i = 0; i < gSwapperTopButtons.size(); i++) {
+            gSwapperButtons.add(gSwapperTopButtons.get(i));
+            gSwapperButtons.add(gSwapperBottomButtons.get(i));
+        }
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -233,9 +273,15 @@ public class MainActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String searchText) {
 
                 if (wasState == 0 && searchText.length() == 0) {
-                    displayedCharacters.clear();
-                    adapter.notifyDataSetChanged();
-                    currentState = 0;
+                    if (currentState == 0) {
+                        displayedCharacters.clear();
+                        displayedCharacters.addAll(gMenuButtons);
+                        adapter.notifyDataSetChanged();
+                    } else {
+                        displayedCharacters.clear();
+                        displayedCharacters.addAll(currentList);
+                        adapter.notifyDataSetChanged();
+                    }
                 } else {
                     wasState = 1;
                     ArrayList<GButton> filteredSkylanders = new ArrayList<>();
@@ -286,9 +332,9 @@ public class MainActivity extends AppCompatActivity {
                         searchText.replace(match, "");
                         searchText.replace(" ", "");
 
-                        filterVillainsByElement(result, gAllButtons, filteredSkylanders, searchText);
+                        filterVillainsByElement(result, currentList, filteredSkylanders, searchText);
 
-                        for (GButton button : gAllButtons) {
+                        for (GLander button : gAllButtons) {
                             if (!button.getText().toLowerCase().contains(searchText.toLowerCase())) {
                                 //filteredSkylanders.remove(button);
                             }
@@ -296,7 +342,7 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         searchText.replace(" ", "");
 
-                        for (GButton button : gAllButtons) {
+                        for (GLander button : currentList) {
                             if (button.getText().toLowerCase().contains(searchText.toLowerCase())) {
                                 filteredSkylanders.add(button);
                             }
@@ -313,28 +359,45 @@ public class MainActivity extends AppCompatActivity {
 
         listView.setOnItemClickListener((parent, view, position, id) -> {
             if (currentState == 0 && wasState == 0) {
-                if (position == 0) {
-                    displayedCharacters.clear();
-                    displayedCharacters.addAll(gVillainButtons);
-                    adapter.notifyDataSetChanged();
-                    currentState = 1;
-                } else if (position == 1) {
-                    displayedCharacters.clear();
-                    displayedCharacters.addAll(gCoreButtons);
-                    adapter.notifyDataSetChanged();
-                    currentState = 2;
+                displayedCharacters.clear();
+                switch (position) {
+                    case 0:
+                        currentList = gCoreButtons;
+                        break;
+                    case 1:
+                        currentList = gSwapperButtons;
+                        break;
+                    case 2:
+                        currentList = gTrapMasterButtons;
+                        break;
+                    case 3:
+                        currentList = gSwapperTopButtons;
+                        break;
+                    case 4:
+                        currentList = gSwapperBottomButtons;
+                        break;
+                    case 5:
+                        currentList = gVillainButtons;
+                        break;
+
                 }
-            } else {
+                currentState = position + 1;
+                displayedCharacters.addAll(currentList);
+                adapter.notifyDataSetChanged();
+            } else if (displayedCharacters.get(position) instanceof GLander) {
                 GLander g = (GLander)displayedCharacters.get(position);
                 if (g.swapper) {
                     if (g.low) {
                         bottomSwapper = g.image;
                         botStr = g.name;
+                        adapter.notifyDataSetChanged();
                     } else {
                         topSwapper = g.image;
                         topStr = g.name;
+                        adapter.notifyDataSetChanged();
                     }
                 }
+
                 String itemName = Byte.toString(g.type.getValue()) + g.getText();
                 client.sendPacket(itemName);
 
@@ -353,6 +416,15 @@ public class MainActivity extends AppCompatActivity {
 
         EditText ipEditText = findViewById(R.id.ip_address_input);
 
+        SharedPreferences sharedPreferences = getSharedPreferences("SkyAppPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        String ipnum = sharedPreferences.getString("ipAddress", "21");
+
+        client.updateIP("192.168.178." + ipnum);
+
+        ipEditText.setText(ipnum);
+
         ipEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -364,6 +436,9 @@ public class MainActivity extends AppCompatActivity {
                 // Not needed for this implementation
             }
 
+            SharedPreferences sharedPreferences = getSharedPreferences("SkyAppPrefs", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+
             @Override
             public void afterTextChanged(Editable s) {
                 String ipNumberStr = s.toString();
@@ -371,9 +446,12 @@ public class MainActivity extends AppCompatActivity {
                     int ipNumber = Integer.parseInt(ipNumberStr);
                     if (ipNumber < 0 || ipNumber > 255) {
                         ipEditText.setText("0");
+                        editor.putString("ipAddress", "0");
                     } else {
                         String fullIpAddress = "192.168.178." + ipNumberStr;
                         TextView ipAddressTextView = findViewById(R.id.ip_address_text);
+                        editor.putString("ipAddress", ipNumberStr);
+                        editor.apply();
                         ipAddressTextView.setText(fullIpAddress);
                         client.updateIP(fullIpAddress);
                     }
@@ -384,16 +462,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (currentState != 0) {
+            searchView.setQuery("", true);
             displayedCharacters.clear();
             displayedCharacters.addAll(gMenuButtons);
             adapter.notifyDataSetChanged();
+            currentList = gAllButtons;
+            wasState = 0;
             currentState = 0;
         } else if (wasState == 1 && currentState == 0) {
             searchView.setQuery("", true);
             displayedCharacters.clear();
             displayedCharacters.addAll(gMenuButtons);
             adapter.notifyDataSetChanged();
+            currentList = gAllButtons;
             wasState = 0;
+            currentState = 0;
             return;
         } else {
             super.onBackPressed();

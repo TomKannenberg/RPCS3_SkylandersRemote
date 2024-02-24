@@ -19,7 +19,7 @@
                 android:layout_marginBottom="8dp"
                 android:padding="16dp"
                 android:background="@android:color/transparent"
-                android:translationY="52dp" />
+                android:translationY="52dp"/>
 
     </FrameLayout>
 
@@ -29,6 +29,7 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:padding="8dp"
-            android:textColor="@color/text_color"/>
+            android:textColor="@color/text_color"
+            android:layout_marginTop="-25dp"/>
 
 </LinearLayout>

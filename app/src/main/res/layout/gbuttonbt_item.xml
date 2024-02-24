@@ -20,7 +20,7 @@
                 android:padding="16dp"
                 android:layout_gravity="center"
                 android:background="@android:color/transparent"
-                android:translationY="38dp"/>
+                android:translationY="12dp"/>
         <!-- Top Image View -->
         <ImageView
                 android:id="@+id/bottom_image_view"
@@ -31,7 +31,8 @@
                 android:layout_margin="8dp"
                 android:padding="16dp"
                 android:layout_gravity="center"
-                android:background="@android:color/transparent"/>
+                android:background="@android:color/transparent"
+                android:translationY="-20dp"/>
     </FrameLayout>
 
     <!-- Text View -->
@@ -42,6 +43,18 @@
             android:textSize="16sp"
             android:padding="8dp"
             android:textColor="@color/text_color"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:layout_marginTop="-50dp"/>
+
+    <!-- Text View -->
+    <TextView
+            android:id="@+id/text_view_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:padding="8dp"
+            android:textColor="@color/text_color"
+            android:layout_gravity="center"
+            android:layout_marginTop="-165dp"/>
 
 </LinearLayout>

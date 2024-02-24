@@ -14,8 +14,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.rpcs3_skylandersremote.MainActivity.bottomSwapper;
-import static com.example.rpcs3_skylandersremote.MainActivity.topSwapper;
+import static com.example.rpcs3_skylandersremote.MainActivity.*;
 
 public class GButtonAdapter extends ArrayAdapter<GButton> implements Filterable {
 
@@ -46,7 +45,6 @@ public class GButtonAdapter extends ArrayAdapter<GButton> implements Filterable 
             }
         }
 
-        // Check if layoutId is valid (not 0) before inflating the layout
         if (layoutId != 0) {
             convertView = LayoutInflater.from(context).inflate(layoutId, parent, false);
             holder = new ViewHolder();
@@ -62,23 +60,22 @@ public class GButtonAdapter extends ArrayAdapter<GButton> implements Filterable 
                 holder.textView.setText(gButton.getText());
 
                 if (gButton.swapper && (layoutId == R.layout.gbuttonbt_item || layoutId == R.layout.gbuttontb_item)) {
-                    if (holder.bottomImageView != null) {
+                    if (holder.bottomImageView != null && holder != null) {
+                        holder.textView2 = convertView.findViewById(R.id.text_view_2);
                         if (gButton.low && topSwapper != 0) {
+                            if (holder.textView2 != null) {
+                                holder.textView2.setText(topStr);
+                            }
                             holder.bottomImageView.setImageResource(topSwapper);
                         } else if (bottomSwapper != 0) {
+                            if (holder.textView2 != null) {
+                                holder.textView2.setText(botStr);
+                            }
                             holder.bottomImageView.setImageResource(bottomSwapper);
                         }
-                    } else {
-                        System.out.println("Error 4");
                     }
-                } else {
-                    System.out.println("Error 3");
                 }
-            } else {
-                System.out.println("Error 2");
             }
-        } else {
-            System.out.println("Error 1");
         }
 
         return convertView;
@@ -88,6 +85,7 @@ public class GButtonAdapter extends ArrayAdapter<GButton> implements Filterable 
         ImageView imageView;
         TextView textView;
         ImageView bottomImageView;
+        TextView textView2;
     }
 
     @Override
